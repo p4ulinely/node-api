@@ -4,9 +4,10 @@ const requireDir = require('require-dir');
 
 //iniciando app
 const app = express();
+app.use(express.json());
 
 //iniciando BD
-mongoose.connect("mongodb://localhost/appTeste", { 
+mongoose.connect("mongodb://localhost/appTeste", {
 	useNewUrlParser: true
 }).then(() => {
 	console.log('MongoDB is on!');
@@ -14,13 +15,15 @@ mongoose.connect("mongodb://localhost/appTeste", {
 }).catch((err) => {
 	console.log(`MongoDB/Falha: ${err}`);
 })
+mongoose.set('useFindAndModify', true);
+mongoose.set('useUnifiedTopology', true);
 
 //carregando todos os models
 requireDir('./src/models');
 
 //rotas
 app.get('/', (req, res) => {
-	res.send("<p align='center'>/get app</p>");
+	res.send("<p align='center'>app home</p>");
 });
 
 app.use('/api', require('./src/routes'));
